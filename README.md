@@ -160,6 +160,75 @@ This repository documents a 6-step data cleaning process applied to Twitter data
 - Flags are added rather than removing data, preserving records for review or downstream filtering.
 - Final script consolidates multiple bot detection criteria under a unified `pbot` label.
 
+# Multilingual Sentiment Analysis Pipeline
+
+This repository contains a multilingual sentiment analysis pipeline capable of processing input text in **64 languages**. The system efficiently handles diverse languages by segregating them based on their compatibility with existing pre-trained models or translation requirements.
+
+## 💡 Workflow Overview
+
+1. **Input:**  
+   A dataset containing text in 64 different languages.
+
+2. **Language Segregation:**  
+   The input is categorized into three groups:
+   - **Mainstream Languages (9 total):**  
+     Directly processed using a multilingual model.
+   - **English:**  
+     Directly processed using an English-specific model.
+   - **Other Languages:**  
+     Translated to English before analysis.
+
+---
+
+## 🔍 Models Used
+
+### 1. `clapAI/roberta-large-multilingual-sentiment`  
+- **Languages Supported:**
+  - Spanish (`es`)
+  - French (`fr`)
+  - German (`de`)
+  - Italian (`it`)
+  - Dutch (`nl`)
+  - Portuguese (`pt`)
+  - Arabic (`ar`)
+  - Japanese (`ja`)
+  - Chinese (`zh-cn`)
+- **Framework:** Hugging Face Transformers  
+- **Purpose:** Multilingual sentiment analysis.
+
+### 2. `cardiffnlp/twitter-roberta-base-sentiment-latest`  
+- **Language:** English  
+- **Model Type:** RoBERTa  
+- **Specialization:**  
+  - Social media content patterns  
+  - Informal expressions and abbreviations
+
+### 3. Google Translate API (via `deep-translator` library)  
+- **Purpose:**  
+  - Translate unsupported languages to English  
+  - Enables broader coverage for sentiment analysis
+
+---
+
+## 📤 Output Format
+
+Each input text returns two key outputs:
+
+- **Sentiment:**  
+  - One of: `Positive`, `Neutral`, or `Negative`
+  
+- **Score:**  
+  - A confidence value indicating the prediction reliability
+
+---
+
+## 📦 Dependencies
+
+- [Transformers](https://huggingface.co/transformers/)
+- [Deep Translator](https://pypi.org/project/deep-translator/)
+- [Torch](https://pytorch.org/)
+- [Hugging Face Datasets](https://huggingface.co/docs/datasets/)
+
 
 
 # 3. David
