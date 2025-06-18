@@ -164,7 +164,7 @@ This repository documents a 6-step data cleaning process applied to Twitter data
 
 This repository contains a multilingual sentiment analysis pipeline capable of processing input text in **64 languages**. The system efficiently handles diverse languages by segregating them based on their compatibility with existing pre-trained models or translation requirements.
 
-## 💡 Workflow Overview
+## Workflow Overview
 
 1. **Input:**  
    A dataset containing text in 64 different languages.
@@ -180,7 +180,7 @@ This repository contains a multilingual sentiment analysis pipeline capable of p
 
 ---
 
-## 🔍 Models Used
+## Models Used
 
 ### 1. `clapAI/roberta-large-multilingual-sentiment`  
 - **Languages Supported:**
@@ -210,7 +210,7 @@ This repository contains a multilingual sentiment analysis pipeline capable of p
 
 ---
 
-## 📤 Output Format
+##  Output Format
 
 Each input text returns two key outputs:
 
@@ -222,27 +222,27 @@ Each input text returns two key outputs:
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 - [Transformers](https://huggingface.co/transformers/)
 - [Deep Translator](https://pypi.org/project/deep-translator/)
 - [Torch](https://pytorch.org/)
 - [Hugging Face Datasets](https://huggingface.co/docs/datasets/)
 
-# 🐬 JSON to MySQL Ingestion Script (To add the conversation file after Sentiment scores are implemented and conversation mined
+# JSON to MySQL Ingestion Script (To add the conversation file after Sentiment scores are implemented and conversation mined
 
 This Python script reads a JSON file containing tweet conversation data and inserts the records into a MySQL table named `dim_conversations`. It performs validation checks, handles duplicates gracefully, and logs progress throughout the process.
 
 ---
 
-## 📂 File Structure
+## File Structure
 
 - `full_conversations_with_final_airline_tag.json` – Input JSON file.
 - `import_json_to_sql.py` – Python script to run the ingestion.
 
 ---
 
-## 📋 Table Requirements
+## Table Requirements
 
 The target MySQL table must exist before running the script:
 
@@ -257,7 +257,7 @@ The target MySQL table must exist before running the script:
 
 ---
 
-## 🛠 Prerequisites
+## Prerequisites
 
 - Python 3.x
 - MySQL server running locally
