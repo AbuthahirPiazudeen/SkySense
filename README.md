@@ -1,104 +1,6 @@
-# SkySense
-Readme file and codes
-# 1. Povilas
 
--------------------------------------------------------------------------
-Prerequisites
--------------------------------------------------------------------------
-Python Libraries
-	The following libraries are required:
-		mysql-connector-python (version 9.3.0): For MySQL database connections.
-		matplotlib (version 3.10.3): For generating visualizations (bar and pie charts).
-	Built-in Python Libraries (no installation needed):
-	json: For JSON parsing/serialization.
-	collections: For data structures like defaultdict.
-	os: For file system operations.
-	datetime: For handling timestamps.
 
-If need be install external libraries using pip:
-	pip install mysql-connector-python==9.3.0 matplotlib==3.10.3
-
-MySQL Database
-	A local MySQL server must be running.
-	Ensure you have a database named tweet_data (or adjust the database name in the scripts).
-	Update the database connection parameters in each script (see below).
-
--------------------------------------------------------------------------
-Setup Instructions
--------------------------------------------------------------------------
-
-Update Database Connection Parameters:
-	All scripts (MySQL_server_populator.py, Conversation_mining.py, TimeDistributionOfConversations.py, ReplyCountFrequencyPieChart.py, piechartforKLMvsTotal.py) connect to a MySQL database.
-Modify the connection parameters in each script to match your MySQL server:
-
-conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="your_password_here",  # Replace with your MySQL password
-    database="tweet_data"          # Replace with your database name if different
-)
-
-Since a local server is used, host and user typically remain as localhost and root, respectively. Update password and database as needed.
-
--------------------------------------------------------------------------
-Prepare JSON Files for Data Loading:
--------------------------------------------------------------------------
-
-Ensure you have a folder containing curated JSON files with tweet data (from a prior data cleaning step).
-
-Update the folder_path variable in MySQL_server_populator.py (line ~47) to point to your JSON files:
-	folder_path = r'your_folder_path_here'  # e.g., r'C:\Users\YourName\Documents\curatedfiles'
-	To get the correct path, right-click the folder containing your JSON files and select "Copy as Path" (Windows) or equivalent.
-
-Example:
-folder_path = r'C:\Users\povil\Desktop\Uni stuff\DBL 1\Data\curatedfiles\curatedfiles'
-
--------------------------------------------------------------------------
-Output Directory for Visualizations:
--------------------------------------------------------------------------
-The visualization scripts (TimeDistributionOfConversations.py, ReplyCountFrequencyPieChart.py, piechartforKLMvsTotal.py) save images to a specified folder.
-
-Update the plt.savefig and os.path.exists paths in these scripts to a valid directory on your system:
-
-plt.savefig('your_folder_path/filename.png', transparent=True, bbox_inches='tight')
-if os.path.exists('your_folder_path/filename.png'):
-
-Example for ReplyCountFrequencyPieChart.py:
-
-plt.savefig('C:/Users/YourName/Desktop/output/reply_count_frequency_pie_chart.png', transparent=True, bbox_inches='tight')
-if os.path.exists('C:/Users/YourName/Desktop/output/reply_count_frequency_pie_chart.png'):
-
-Ensure the folder exists and you have write permissions.
-
--------------------------------------------------------------------------
-Running the Scripts
-Follow these steps in order to process and analyze the tweet data:
--------------------------------------------------------------------------
-
-Populate the Database:
-	Run MySQL_server_populator.py to load JSON tweet data into the MySQL database.
-
-This script creates a tweets table and inserts data from JSON files. Ensure the folder_path is correctly set.
-
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-Mine Conversations:
-	Run Conversation_mining.py to analyze tweet conversations and populate the dim_conversations table.
-
-No additional changes are needed if the database connection parameters are correct.
-
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-Generate Visualizations:
-Run the following scripts to create visualizations based on the mined data:
-	TimeDistributionOfConversations.py: Creates a bar chart of conversation counts by month.
-	ReplyCountFrequencyPieChart.py: Creates a pie chart of reply count frequencies.
-	piechartforKLMvsTotal.py: Creates a pie chart comparing @KLM conversations to total conversations.
-Ensure the output paths for plt.savefig are updated as described above.
-Output images will be saved to the specified directories.
-\
-
-# 2. Abu
+#  Abu
 # Tweet Data Cleaning Pipeline
 
 This repository documents a 6-step data cleaning process applied to Twitter data for the purpose of airline-related sentiment analysis and bot detection. Each step focuses on a specific data quality dimension to ensure the dataset is reliable, consistent, and relevant.
@@ -136,7 +38,7 @@ This repository documents a 6-step data cleaning process applied to Twitter data
 - Invalid values are set to `NULL`, and affected rows are flagged under `quality_flag = 'invalid_format'`.
 - A validity report is generated to track issues.
 
-### Step 6: Relevance and Bot Detection (`step_6_relevance.py`)
+### Step 6: Relevance and Bot Detection (`step_6_relevance.py`) and (`step_6_2_relevance.py`)
 - **Bot Detection (flagged as `pbot`)** using the following criteria:
   - High retweet ratio (retweet count significantly exceeds other engagement metrics).
   - Repetitive text (same content posted over 50 times).
@@ -158,7 +60,21 @@ This repository documents a 6-step data cleaning process applied to Twitter data
 ## Notes
 - All scripts are modular and can be executed independently.
 - Flags are added rather than removing data, preserving records for review or downstream filtering.
-- Final script consolidates multiple bot detection criteria under a unified `pbot` label.
+- Final script consolidates multiple bot detection criteria under a unified `pbot` label.4
+
+## Required Libraries for the cleaning part 
+### Database Connection
+import pymysql
+
+### Data Handling
+import pandas as pd
+
+### Date & Time
+from datetime import datetime
+
+### Regular Expressions
+import re
+
 
 # Multilingual Sentiment Analysis Pipeline
 
@@ -263,16 +179,98 @@ The target MySQL table must exist before running the script:
 - MySQL server running locally
 - The following Python packages:
   - `pymysql`
+  - `os`
+  - `json` import
 
+# Business Intelligence: Measuring Twitter Response Impact for Airlines
 
+This project analyzes Twitter-based customer service interactions of major airlines—KLM, Lufthansa, and British Airways—to assess how engagement strategies affect public sentiment and customer satisfaction.
 
-# 3. David
+## 1. Context and Motivation
 
-# 4. Dragos
+Modern airlines use Twitter extensively for customer service and brand communication. However, the effectiveness of these responses is not always clear. This project investigates key questions such as:
 
-# 5. Rares
+- Does replying faster improve customer satisfaction?
+- Does simply replying at all help reduce frustration?
+- Can the business value of a Twitter support team be quantified?
 
-# 6. Alp
+The goal is to analyze and demonstrate the impact of Twitter engagement strategies on public sentiment using data-driven methods.
+
+## 2. Key Objectives
+
+The analysis focuses on the following objectives:
+
+- Quantify reply engagement for major airlines (KLM, Lufthansa, British Airways)
+- Measure the effect of response time on customer sentiment
+- Compare sentiment before and after the airlines’ replies
+- Benchmark KLM’s performance against its competitors
+- Account for external factors, such as the COVID-19 pandemic or labor strikes
+
+## 3. Core Metrics
+
+**Engagement Metrics:**
+
+- **Reply Rate** = (Replies made by airline) / (Total incoming tweets) × 100
+- **Response Speed** = Average time (in minutes) from customer tweet to the airline’s first reply
+
+**Sentiment Metrics:**
+
+- **Before/After Sentiment** – Sentiment of original customer tweets vs. sentiment after receiving a reply
+- **Sentiment Lift** – Change in sentiment classification from original to response
+- **Correlation Analysis** – Examines whether faster responses are associated with higher sentiment lift
+
+## 4. Analytical Approach
+
+The project uses the following techniques and methodologies:
+
+- Sentiment classification (positive, neutral, negative) using labeled tweets
+- Matching of customer tweets with corresponding airline replies
+- Time-based grouping to simulate full conversation threads
+- Correlation plots and statistical methods to assess relationships between engagement and sentiment
+
+## 5. Graph Scripts
+
+The following Python scripts are used to generate analytical visualizations for comparison across KLM, Lufthansa, and British Airways:
+
+- **`reply_rate.py`**  
+  Visualizes the reply rate (percentage of customer tweets that received a response) for each airline.
+
+- **`graph_2_busi.py`**  
+  Analyzes and plots average response time trends over time.
+
+- **`Graph 3.py`**  
+  Measures and visualizes sentiment lift across time bins, comparing pre- and post-reply sentiment distributions.
+
+- **`Cor_business_idea.py`**  
+  Performs Pearson and Spearman correlation analysis to identify statistical relationships between response speed and sentiment lift.
+
+## 6. Output and Insights
+
+Each script provides comparative insight into how airlines perform with respect to Twitter responsiveness and its measurable impact on customer sentiment. The analysis emphasizes KLM's strategy against its competitors to uncover patterns that could support actionable business decisions.
+
+## 7. Dependencies
+
+This project relies on the following Python libraries:
+
+### Data Handling
+import pandas as pd
+import numpy as np
+import json
+
+### Plotting & Visualization
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+### Database Connection
+from sqlalchemy import create_engine, text
+
+### Date & Time
+from datetime import datetime
+import time
+
+### Statistical Analysis
+from scipy.stats import pearsonr, spearmanr
+
 
 
 
