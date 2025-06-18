@@ -229,6 +229,41 @@ Each input text returns two key outputs:
 - [Torch](https://pytorch.org/)
 - [Hugging Face Datasets](https://huggingface.co/docs/datasets/)
 
+# 🐬 JSON to MySQL Ingestion Script (To add the conversation file after Sentiment scores are implemented and conversation mined
+
+This Python script reads a JSON file containing tweet conversation data and inserts the records into a MySQL table named `dim_conversations`. It performs validation checks, handles duplicates gracefully, and logs progress throughout the process.
+
+---
+
+## 📂 File Structure
+
+- `full_conversations_with_final_airline_tag.json` – Input JSON file.
+- `import_json_to_sql.py` – Python script to run the ingestion.
+
+---
+
+## 📋 Table Requirements
+
+The target MySQL table must exist before running the script:
+
+**Table Name:** `dim_conversations`
+
+**Expected Columns:**
+- `tweet_id`
+- `reply_count`
+- `category`
+- `conversation_json`
+- `airline_tag`
+
+---
+
+## 🛠 Prerequisites
+
+- Python 3.x
+- MySQL server running locally
+- The following Python packages:
+  - `pymysql`
+
 
 
 # 3. David
